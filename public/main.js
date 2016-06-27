@@ -5,6 +5,28 @@ var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
 var completeCounter = document.getElementById("count-label");
 var deleteComplete = document.getElementById("delete-complete");
+var all = document.getElementById("all");
+var active = document.getElementById("active");
+var completed = document.getElementById("completed");
+const allValues = 0;
+const activeValues = 1;
+const completeValues = 2;
+var mode = allValues;
+
+all.onclick = function(){
+    mode=allValues;
+    reloadTodoList();
+}
+
+active.onclick = function(){
+    mode=activeValues;
+    reloadTodoList();
+}
+
+completed.onclick = function(){
+    mode=completeValues;
+    reloadTodoList();
+}
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
@@ -45,6 +67,8 @@ function reloadTodoList() {
         var count = 0;
         var completeList = [];
         todos.forEach(function(todo) {
+            if(!selector(todo,mode))
+                return;
             if (!todo.complete) {
                 count++;
             }
@@ -79,6 +103,17 @@ function reloadTodoList() {
             return;
         };
     });
+}
+
+function selector(value, mode) {
+    switch(mode){
+        case allValues:
+            return true;
+        case activeValues:
+            return !value.complete;
+        case completeValues:
+            return value.complete;
+    }
 }
 
 function nameFilter(item) {
