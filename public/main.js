@@ -1,3 +1,4 @@
+//--------------------Initialisation--------------------------------------------
 var todoList = document.getElementById("todo-list");
 var todoListPlaceholder = document.getElementById("todo-list-placeholder");
 var form = document.getElementById("todo-form");
@@ -17,26 +18,28 @@ var messages = [
 var ALL_VALUES = 0;
 var ACTIVE_VALUES = 1;
 var COMPLETE_VALUES = 2;
-var mode = ALL_VALUES;
-displayMessage.innerHTML = messages[ALL_VALUES];
+var mode;
+//this refreshes the page and initialises display mode to show all items in list
+modeSetter(ALL_VALUES);
 
+//---------------------Actual-functionality-------------------------------------
 all.onclick = function() {
-    mode = ALL_VALUES;
-    displayMessage.innerHTML = messages[mode];
-    reloadTodoList();
+    modeSetter(ALL_VALUES);
 };
 
 active.onclick = function() {
-    mode = ACTIVE_VALUES;
-    displayMessage.innerHTML = messages[mode];
-    reloadTodoList();
+    modeSetter(ACTIVE_VALUES);
 };
 
 completed.onclick = function() {
-    mode = COMPLETE_VALUES;
+    modeSetter(COMPLETE_VALUES);
+};
+
+function modeSetter(newMode) {
+    mode = newMode;
     displayMessage.innerHTML = messages[mode];
     reloadTodoList();
-};
+}
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
@@ -196,5 +199,3 @@ function onLoadFactory(req, err, status, callback, func, prop) {
         }
     };
 }
-
-reloadTodoList();
