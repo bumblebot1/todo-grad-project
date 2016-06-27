@@ -1,4 +1,3 @@
-//--------------------Initialisation--------------------------------------------
 var todoList = document.getElementById("todo-list");
 var todoListPlaceholder = document.getElementById("todo-list-placeholder");
 var form = document.getElementById("todo-form");
@@ -22,7 +21,6 @@ var mode;
 //this refreshes the page and initialises display mode to show all items in list
 setMode(ALL_VALUES);
 
-//---------------------Actual-functionality-------------------------------------
 all.onclick = function() {
     setMode(ALL_VALUES);
 };
@@ -199,3 +197,5 @@ function onLoadFactory(req, err, status, callback, func, prop) {
         }
     };
 }
+
+reloadTodoList();
