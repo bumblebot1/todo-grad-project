@@ -20,22 +20,22 @@ var ACTIVE_VALUES = 1;
 var COMPLETE_VALUES = 2;
 var mode;
 //this refreshes the page and initialises display mode to show all items in list
-modeSetter(ALL_VALUES);
+setMode(ALL_VALUES);
 
 //---------------------Actual-functionality-------------------------------------
 all.onclick = function() {
-    modeSetter(ALL_VALUES);
+    setMode(ALL_VALUES);
 };
 
 active.onclick = function() {
-    modeSetter(ACTIVE_VALUES);
+    setMode(ACTIVE_VALUES);
 };
 
 completed.onclick = function() {
-    modeSetter(COMPLETE_VALUES);
+    setMode(COMPLETE_VALUES);
 };
 
-function modeSetter(newMode) {
+function setMode(newMode) {
     mode = newMode;
     displayMessage.innerHTML = messages[mode];
     reloadTodoList();
