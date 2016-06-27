@@ -63,17 +63,13 @@ function reloadTodoList() {
             listItem.appendChild(completeButton);
             todoList.appendChild(listItem);
         });
-        var classes = completeCounter.className.split(" ").filter(function(value) {
-            return value !== "hidden";
-        }).join(" ");
+        var classes = nameFilter(completeCounter);
         completeCounter.textContent = count;
         completeCounter.className = classes;
         if (count === 0) {
             completeCounter.className += " hidden";
         }
-        classes = deleteComplete.className.split(" ").filter(function(value) {
-            return value !== "hidden";
-        }).join(" ");
+        var classes = nameFilter(deleteComplete);
         deleteComplete.className = classes;
         if (completeList.length === 0) {
             deleteComplete.className += " hidden";
@@ -83,6 +79,12 @@ function reloadTodoList() {
             return;
         };
     });
+}
+
+function nameFilter(item) {
+    return item.className.split(" ").filter(function(value) {
+        return value !== "hidden";
+    }).join(" ");
 }
 
 function deleteList(todoList) {
