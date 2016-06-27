@@ -38,6 +38,13 @@ h1 {
     font-family: cursive;
 }
 
+.delete-complete{
+    margin-left: 10px;
+    color: white;
+    background-color: red;
+    font-family: cursive;
+}
+
 .complete{
     font-style: italic;
     font-weight: normal;
