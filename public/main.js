@@ -72,7 +72,7 @@ function reloadTodoList() {
         var count = 0;
         var completeList = [];
         todos.forEach(function(todo) {
-            if (!selector(todo, mode)) {
+            if (!filterTodoElements(todo, mode)) {
                 return;
             }
             if (!todo.complete) {
@@ -111,7 +111,7 @@ function reloadTodoList() {
     });
 }
 
-function selector(value, mode) {
+function filterTodoElements(value, mode) {
     switch (mode){
         case ALL_VALUES:
             return true;
