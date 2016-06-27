@@ -60,13 +60,10 @@ function reloadTodoList() {
         });
         var classes = completeCounter.className.split(" ").filter(function(value) {
             return value !== "hidden";
-        });
+        }).join(' ');
+        completeCounter.textContent = count;
         if (count === 0) {
-            completeCounter.className = classes[0] + " hidden";
-        }
-        else {
-            completeCounter.textContent = count;
-            completeCounter.className = classes[0];
+            completeCounter.className = classes+ " hidden";
         }
     });
 }
