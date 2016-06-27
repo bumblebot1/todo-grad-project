@@ -8,23 +8,28 @@ var deleteComplete = document.getElementById("delete-complete");
 var all = document.getElementById("all");
 var active = document.getElementById("active");
 var completed = document.getElementById("completed");
+var displayMessage = document.getElementById("display-message");
 var ALL_VALUES = 0;
 var ACTIVE_VALUES = 1;
 var COMPLETE_VALUES = 2;
 var mode = ALL_VALUES;
+displayMessage.innerHTML = "Displaying all todo items.";
 
 all.onclick = function() {
     mode = ALL_VALUES;
+    displayMessage.innerHTML = "Displaying all todo items.";
     reloadTodoList();
 };
 
 active.onclick = function() {
     mode = ACTIVE_VALUES;
+    displayMessage.innerHTML = "Displaying only currently active todo items.";
     reloadTodoList();
 };
 
 completed.onclick = function() {
     mode = COMPLETE_VALUES;
+    displayMessage.innerHTML = "Displaying only completed todo items.";
     reloadTodoList();
 };
 
@@ -80,9 +85,9 @@ function reloadTodoList() {
             listItem.textContent = todo.title;
             listItem.className = todo.complete ? "complete" : "incomplete";
 
-            var deleteButton = buttonFactory("delete", "button", deleteEntry, todo);
+            var deleteButton = buttonFactory("delete", deleteEntry, todo);
 
-            var completeButton = buttonFactory("complete", "button", completeEntry, todo);
+            var completeButton = buttonFactory("complete", completeEntry, todo);
 
             listItem.appendChild(deleteButton);
             listItem.appendChild(completeButton);
@@ -126,7 +131,7 @@ function nameFilter(item) {
 function deleteList(todoList) {
     var executed = 0;
     var listener = function() {
-        if (executed === 1) {
+        if (executed < 2) {
             reloadTodoList();
         }
         else {
@@ -140,12 +145,10 @@ function deleteList(todoList) {
 }
 
 function deleteEntry(todo, callback) {
+    callback = callback || reloadTodoList;
     var createRequest = new XMLHttpRequest();
     createRequest.open("DELETE", "/api/todo/" + todo.id);
     createRequest.setRequestHeader("Content-type", "application/json");
-    if (callback === undefined) {
-        callback = reloadTodoList;
-    }
     createRequest.onload = onLoadFactory(createRequest, "Failed to delete. Server returned ", 200,
                            callback);
     createRequest.send();
@@ -163,10 +166,10 @@ function completeEntry(todo) {
     }));
 }
 
-function buttonFactory(name, style, listener, todo) {
+function buttonFactory(name, listener, todo) {
     var button = document.createElement("button");
     button.textContent = name;
-    button.className = style;
+    button.className = "button";
     button.addEventListener("click", function() {
         listener(todo);
     });
