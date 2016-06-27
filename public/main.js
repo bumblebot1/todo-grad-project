@@ -69,7 +69,7 @@ function reloadTodoList() {
         if (count === 0) {
             completeCounter.className += " hidden";
         }
-        var classes = nameFilter(deleteComplete);
+        classes = nameFilter(deleteComplete);
         deleteComplete.className = classes;
         if (completeList.length === 0) {
             deleteComplete.className += " hidden";
