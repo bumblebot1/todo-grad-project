@@ -124,23 +124,29 @@ function nameFilter(item) {
 }
 
 function deleteList(todoList) {
+    var executed = 0;
     for (var i = 0; i < todoList.length; i++) {
-        var createRequest = new XMLHttpRequest();
-        createRequest.open("DELETE", "/api/todo/" + todoList[i].id);
-        createRequest.setRequestHeader("Content-type", "application/json");
-        createRequest.onload = onLoadFactory(createRequest, "Failed to delete. Server returned ", 200,
-                               function() { return; });
-        createRequest.send();
+        executed++;
+        deleteEntry(todoList[i], function() {
+            if(executed === 1) {
+                 reloadTodoList();
+             }
+             else {
+                 executed--;
+             }
+        });
     }
-    reloadTodoList();
 }
 
-function deleteEntry(todo) {
+function deleteEntry(todo, callback) {
     var createRequest = new XMLHttpRequest();
     createRequest.open("DELETE", "/api/todo/" + todo.id);
     createRequest.setRequestHeader("Content-type", "application/json");
+    if(callback === undefined){
+        callback = reloadTodoList;
+    }
     createRequest.onload = onLoadFactory(createRequest, "Failed to delete. Server returned ", 200,
-                           reloadTodoList);
+                           callback);
     createRequest.send();
 }
 
