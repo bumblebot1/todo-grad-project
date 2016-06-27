@@ -48,16 +48,16 @@ function reloadTodoList() {
             if (!todo.complete) {
                 count++;
             }
-            else{
+            else {
                 completeList.push(todo);
             }
             var listItem = document.createElement("li");
             listItem.textContent = todo.title;
             listItem.className = todo.complete ? "complete" : "incomplete";
 
-            var deleteButton = buttonFactory("delete", "delete-button", deleteEntry, todo);
+            var deleteButton = buttonFactory("delete", "button", deleteEntry, todo);
 
-            var completeButton = buttonFactory("complete", "complete-button", completeEntry, todo);
+            var completeButton = buttonFactory("complete", "button", completeEntry, todo);
 
             listItem.appendChild(deleteButton);
             listItem.appendChild(completeButton);
@@ -75,10 +75,10 @@ function reloadTodoList() {
             return value !== "hidden";
         }).join(" ");
         deleteComplete.className = classes;
-        if(completeList.length === 0){
+        if (completeList.length === 0) {
             deleteComplete.className += " hidden";
         }
-        deleteComplete.onclick = function(){
+        deleteComplete.onclick = function() {
             deleteList(completeList);
             return;
         };
@@ -86,7 +86,7 @@ function reloadTodoList() {
 }
 
 function deleteList(todoList) {
-    for(var i=0; i<todoList.length; i++){
+    for (var i = 0; i < todoList.length; i++) {
         var createRequest = new XMLHttpRequest();
         createRequest.open("DELETE", "/api/todo/" + todoList[i].id);
         createRequest.setRequestHeader("Content-type", "application/json");

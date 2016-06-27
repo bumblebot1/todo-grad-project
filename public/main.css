@@ -24,35 +24,25 @@ h1 {
     color: rgba(255, 255, 255, 0.87);
 }
 
-.delete-button{
-    margin-left: 10px;
-    color: white;
-    background-color: rgba(52, 114, 162, 1);
-    font-family: cursive;
-}
-
-.complete-button{
-    margin-left: 10px;
+.button{
+    margin-left: 5px;
     color: white;
     background-color: rgba(32, 105, 33, 1);
     font-family: cursive;
-}
-
-.delete-complete{
-    margin-left: 10px;
-    color: white;
-    background-color: red;
-    font-family: cursive;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px 3px #ccc;
 }
 
 .complete{
     font-style: italic;
     font-weight: normal;
+    font-size: 15;
 }
 
 .incomplete{
     font-style: normal;
     font-weight: bold;
+    font-size: 15;
 }
 
 .complete-count{
