@@ -8,25 +8,25 @@ var deleteComplete = document.getElementById("delete-complete");
 var all = document.getElementById("all");
 var active = document.getElementById("active");
 var completed = document.getElementById("completed");
-const allValues = 0;
-const activeValues = 1;
-const completeValues = 2;
-var mode = allValues;
+var ALL_VALUES = 0;
+var ACTIVE_VALUES = 1;
+var COMPLETE_VALUES = 2;
+var mode = ALL_VALUES;
 
-all.onclick = function(){
-    mode=allValues;
+all.onclick = function() {
+    mode = ALL_VALUES;
     reloadTodoList();
-}
+};
 
-active.onclick = function(){
-    mode=activeValues;
+active.onclick = function() {
+    mode = ACTIVE_VALUES;
     reloadTodoList();
-}
+};
 
-completed.onclick = function(){
-    mode=completeValues;
+completed.onclick = function() {
+    mode = COMPLETE_VALUES;
     reloadTodoList();
-}
+};
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
@@ -67,8 +67,9 @@ function reloadTodoList() {
         var count = 0;
         var completeList = [];
         todos.forEach(function(todo) {
-            if(!selector(todo,mode))
+            if (!selector(todo, mode)) {
                 return;
+            }
             if (!todo.complete) {
                 count++;
             }
@@ -106,12 +107,12 @@ function reloadTodoList() {
 }
 
 function selector(value, mode) {
-    switch(mode){
-        case allValues:
+    switch (mode){
+        case ALL_VALUES:
             return true;
-        case activeValues:
+        case ACTIVE_VALUES:
             return !value.complete;
-        case completeValues:
+        case COMPLETE_VALUES:
             return value.complete;
     }
 }
