@@ -9,27 +9,32 @@ var all = document.getElementById("all");
 var active = document.getElementById("active");
 var completed = document.getElementById("completed");
 var displayMessage = document.getElementById("display-message");
+var messages = [
+    "Displaying all todo items.",
+    "Displaying only currently active todo items.",
+    "Displaying only completed todo items."
+];
 var ALL_VALUES = 0;
 var ACTIVE_VALUES = 1;
 var COMPLETE_VALUES = 2;
 var mode = ALL_VALUES;
-displayMessage.innerHTML = "Displaying all todo items.";
+displayMessage.innerHTML = messages[ALL_VALUES];
 
 all.onclick = function() {
     mode = ALL_VALUES;
-    displayMessage.innerHTML = "Displaying all todo items.";
+    displayMessage.innerHTML = messages[mode];
     reloadTodoList();
 };
 
 active.onclick = function() {
     mode = ACTIVE_VALUES;
-    displayMessage.innerHTML = "Displaying only currently active todo items.";
+    displayMessage.innerHTML = messages[mode];
     reloadTodoList();
 };
 
 completed.onclick = function() {
     mode = COMPLETE_VALUES;
-    displayMessage.innerHTML = "Displaying only completed todo items.";
+    displayMessage.innerHTML = messages[mode];
     reloadTodoList();
 };
 
