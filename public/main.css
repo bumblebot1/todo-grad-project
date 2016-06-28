@@ -35,6 +35,51 @@ h1 {
     color: rgba(255, 255, 255, 0.87);
 }
 
+::-webkit-scrollbar
+{
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track
+{
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.scroll-container{
+    overflow-y: scroll;
+    margin-top: 20px;
+    height: 400px;
+}
+
+.flex-container{
+    display: flex;
+    width: 800;
+    height: 400;
+    background-color: royalblue;
+    justify-content: center;
+}
+
+.flex-item{
+    width: 400px;
+    height: 100px;
+    margin: 20px;
+    background-color: orange;
+}
+
+.text-input{
+    height: 30px;
+    width: 400px;
+    display: inline-block;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
 .container{
     float:left;
     clear:none;
@@ -54,6 +99,10 @@ h1 {
     overflow: hidden;
 }
 
+.button:hover{
+    background-color: rgba(42, 210, 48, 1);
+}
+
 .complete{
     font-style: italic;
     font-weight: normal;
@@ -71,7 +120,6 @@ h1 {
     font-family: cursive;
     font-size: 14;
     font-weight: bold;
-    background-color: royalblue;
     color: white;
 }
 
@@ -81,7 +129,6 @@ h1 {
     font-family: cursive;
     font-size: 14;
     font-weight: bold;
-    background-color: royalblue;
     color: white;
 }
 
