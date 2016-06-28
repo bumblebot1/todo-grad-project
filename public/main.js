@@ -48,6 +48,25 @@ form.onsubmit = function(event) {
     event.preventDefault();
 };
 
+//the flag parameter is set when the response body should be use for the callback
+function responseHandlerFactory(callback, err, status, flag) {
+    return function(res) {
+        if (res.status === status) {
+            if (flag) {
+                res.json().then(callback);
+            }
+            else {
+                callback();
+            }
+        }
+        else {
+            res.text().then(function(data) {
+                error.textContent = err + res.status + " - " + data;
+            });
+        }
+    };
+}
+
 function createTodo(str, callback) {
     var payload = {
         title: str,
@@ -76,6 +95,53 @@ function getTodoList(callback) {
     })
     .then(
         responseHandlerFactory(callback, "Failed to get list. Server returned ", 200, true)
+    );
+}
+
+function completeEntry(todo) {
+    var payload = {
+        id: todo.id,
+        complete: true
+    };
+    fetch("/api/todo/", {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(
+        responseHandlerFactory(reloadTodoList, "Failed to update. Server returned ", 200, false)
+    );
+}
+
+function deleteList(todoList) {
+    var executed = 0;
+    var listener = function() {
+        if (executed < 2) {
+            reloadTodoList();
+        }
+        else {
+            executed--;
+        }
+    };
+    for (var i = 0; i < todoList.length; i++) {
+        executed++;
+        deleteEntry(todoList[i], listener);
+    }
+}
+
+function deleteEntry(todo, callback) {
+    callback = callback || reloadTodoList;
+
+    fetch("/api/todo/" + todo.id, {
+        method: "DELETE",
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+    .then(
+        responseHandlerFactory(callback, "Failed to delete. Server returned ", 200, false)
     );
 }
 
@@ -145,53 +211,6 @@ function nameFilter(item) {
     }).join(" ");
 }
 
-function deleteList(todoList) {
-    var executed = 0;
-    var listener = function() {
-        if (executed < 2) {
-            reloadTodoList();
-        }
-        else {
-            executed--;
-        }
-    };
-    for (var i = 0; i < todoList.length; i++) {
-        executed++;
-        deleteEntry(todoList[i], listener);
-    }
-}
-
-function deleteEntry(todo, callback) {
-    callback = callback || reloadTodoList;
-
-    fetch("/api/todo/" + todo.id, {
-        method: "DELETE",
-        headers: {
-            "Content-type": "application/json"
-        }
-    })
-    .then(
-        responseHandlerFactory(callback, "Failed to delete. Server returned ", 200, false)
-    );
-}
-
-function completeEntry(todo) {
-    var payload = {
-        id: todo.id,
-        complete: true
-    };
-    fetch("/api/todo/", {
-        method: "PUT",
-        headers: {
-            "Content-type": "application/json"
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(
-        responseHandlerFactory(reloadTodoList, "Failed to update. Server returned ", 200, false)
-    );
-}
-
 function buttonFactory(name, listener, todo) {
     var button = document.createElement("button");
     button.textContent = name;
@@ -200,23 +219,4 @@ function buttonFactory(name, listener, todo) {
         listener(todo);
     });
     return button;
-}
-
-//the flag parameter is set when the response body should be use for the callback
-function responseHandlerFactory(callback, err, status, flag) {
-    return function(res) {
-        if (res.status === status) {
-            if (flag) {
-                res.json().then(callback);
-            }
-            else {
-                callback();
-            }
-        }
-        else {
-            res.text().then(function(data) {
-                error.textContent = err + res.status + " - " + data;
-            });
-        }
-    };
 }
