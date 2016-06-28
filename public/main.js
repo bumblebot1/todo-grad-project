@@ -79,9 +79,7 @@ function createTodo(str, callback) {
     .then(
         responseStatusCheck(201, "Failed to create item. Server returned ")
     )
-    .then(function(res) {
-        callback();
-    })
+    .then(callback)
     .catch(handleError);
 }
 
@@ -117,9 +115,7 @@ function completeEntry(todo) {
     .then(
         responseStatusCheck(200, "Failed to update. Server returned ")
     )
-    .then(function(res) {
-        reloadTodoList();
-    })
+    .then(reloadTodoList)
     .catch(handleError);
 
 }
@@ -152,9 +148,7 @@ function deleteEntry(todo, callback) {
     .then(
         responseStatusCheck(200, "Failed to delete. Server returned ")
     )
-    .then(function(res) {
-        callback();
-    })
+    .then(callback)
     .catch(handleError);
 }
 
