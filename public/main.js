@@ -61,11 +61,19 @@ function createTodo(title, callback) {
 }
 
 function getTodoList(callback) {
-    var createRequest = new XMLHttpRequest();
-    createRequest.open("GET", "/api/todo");
-    createRequest.onload = onLoadFactory(createRequest, "Failed to get list. Server returned ",
-                           200, callback, JSON.parse, "responseText");
-    createRequest.send();
+
+    fetch('/api/todo')
+        .then(function(response){
+            var status = response.status;
+            response.json().then(function(data) {
+                if(status === 200){
+                    callback(data);
+                }
+                else {
+                    error.textContent = "Failed to get list. Server returned " + response.status + " - " + JSON.stringify(data);
+                }
+            });
+        });
 }
 
 function reloadTodoList() {
