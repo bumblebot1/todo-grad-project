@@ -10,19 +10,23 @@
         <header>
             <h1>TODO List</h1>
         </header>
-        <div id="count-label" class="complete-count container"></div>
-        <div id="display-message" class="display-message"></div>
+        <div class="flex-container">
+            <div id="count-label" class="complete-count container flex-item"></div>
+            <div id="display-message" class="display-message flex-item"></div>
+        </div>
         <section>
             <form id="todo-form">
-                <input id="new-todo" placeholder="What needs to be done?" autofocus>
+                <input id="new-todo" placeholder="What needs to be done?" autofocus class="text-input">
                 <input id="submit-todo" type="submit" value="Create" class="button">
                 <button id="all" type="button" class="button">All</button>
                 <button id="active" type="button" class="button">Active</button>
                 <button id="completed" type="button" class="button">Completed</button>
                 <button id="delete-complete" type="button" class="button hidden">Delete Complete</button>
             </form>
-            <h2 id="todo-list-placeholder">Loading...</h2>
-            <ul id="todo-list"></ul>
+            <div class="scroll-container">
+                <h2 id="todo-list-placeholder">Loading...</h2>
+                <ul id="todo-list"></ul>
+            </div>
             <div id="error"></div>
         </section>
         <script type="text/javascript" src="main.js"></script>
