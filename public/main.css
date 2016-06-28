@@ -34,7 +34,7 @@ h1 {
     color: white;
     background-color: rgba(32, 105, 33, 1);
     font-family: cursive;
-    border-radius: 5px;
+    border-radius: 50px;
     box-shadow: 3px 3px 3px 3px #ccc;
     font-size: 15;
 }
