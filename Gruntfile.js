@@ -4,6 +4,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-mocha-test");
     grunt.loadNpmTasks("grunt-mocha-istanbul");
     grunt.loadNpmTasks("grunt-run");
+    grunt.loadNpmTasks("grunt-contrib-watch");
 
     var testOutputLocation = process.env.CIRCLE_TEST_REPORTS || "test_output";
     var artifactsLocation = "build_artifacts";
@@ -71,6 +72,15 @@ module.exports = function(grunt) {
         run: {
             server: {
                 args: ["server.js"]
+            }
+        },
+        watch: {
+            scripts: {
+                files: ["server/*"],
+                tasks: ["serve"],
+                options: {
+                    interrupt: true
+                }
             }
         }
     });
