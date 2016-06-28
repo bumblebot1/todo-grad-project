@@ -41,13 +41,17 @@ h1 {
 }
 
 .button{
+    position: relative;
     margin-left: 5px;
     color: white;
     background-color: rgba(32, 105, 33, 1);
     font-family: cursive;
-    border-radius: 50px;
-    box-shadow: 3px 3px 3px 3px #ccc;
+    border-radius: 15px;
     font-size: 15;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0 3px #999;
+    overflow: hidden;
 }
 
 .complete{
@@ -82,5 +86,5 @@ h1 {
 }
 
 .hidden{
-    visibility: hidden;
+    display: none;
 }
