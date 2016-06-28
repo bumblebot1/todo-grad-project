@@ -48,32 +48,35 @@ form.onsubmit = function(event) {
     event.preventDefault();
 };
 
-function createTodo(title, callback) {
-    var createRequest = new XMLHttpRequest();
-    createRequest.open("POST", "/api/todo");
-    createRequest.setRequestHeader("Content-type", "application/json");
-    createRequest.send(JSON.stringify({
-        title: title,
+function createTodo(str, callback) {
+    var payload = {
+        title: str,
         complete: false
-    }));
-    createRequest.onload = onLoadFactory(createRequest, "Failed to create item. Server returned ",
-                           201, callback);
+    };
+
+    fetch("/api/todo", {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(
+        responseHandlerFactory(callback, "Failed to create item. Server returned ", 201, false)
+    );
 }
 
 function getTodoList(callback) {
 
-    fetch('/api/todo')
-        .then(function(response){
-            var status = response.status;
-            response.json().then(function(data) {
-                if(status === 200){
-                    callback(data);
-                }
-                else {
-                    error.textContent = "Failed to get list. Server returned " + response.status + " - " + JSON.stringify(data);
-                }
-            });
-        });
+    fetch("/api/todo", {
+        method: "GET",
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+    .then(
+        responseHandlerFactory(callback, "Failed to get list. Server returned ", 200, true)
+    );
 }
 
 function reloadTodoList() {
@@ -160,24 +163,33 @@ function deleteList(todoList) {
 
 function deleteEntry(todo, callback) {
     callback = callback || reloadTodoList;
-    var createRequest = new XMLHttpRequest();
-    createRequest.open("DELETE", "/api/todo/" + todo.id);
-    createRequest.setRequestHeader("Content-type", "application/json");
-    createRequest.onload = onLoadFactory(createRequest, "Failed to delete. Server returned ", 200,
-                           callback);
-    createRequest.send();
+
+    fetch("/api/todo/" + todo.id, {
+        method: "DELETE",
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+    .then(
+        responseHandlerFactory(callback, "Failed to delete. Server returned ", 200, false)
+    );
 }
 
 function completeEntry(todo) {
-    var createRequest = new XMLHttpRequest();
-    createRequest.open("PUT", "/api/todo/");
-    createRequest.setRequestHeader("Content-type", "application/json");
-    createRequest.onload = onLoadFactory(createRequest, "Failed to update. Server returned ", 200,
-                           reloadTodoList);
-    createRequest.send(JSON.stringify({
+    var payload = {
         id: todo.id,
         complete: true
-    }));
+    };
+    fetch("/api/todo/", {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(
+        responseHandlerFactory(reloadTodoList, "Failed to update. Server returned ", 200, false)
+    );
 }
 
 function buttonFactory(name, listener, todo) {
@@ -190,20 +202,21 @@ function buttonFactory(name, listener, todo) {
     return button;
 }
 
-function onLoadFactory(req, err, status, callback, func, prop) {
-    return function() {
-        if (this.status === status) {
-            if (func === undefined) {
-                callback();
+//the flag parameter is set when the response body should be use for the callback
+function responseHandlerFactory(callback, err, status, flag) {
+    return function(res) {
+        if (res.status === status) {
+            if (flag) {
+                res.json().then(callback);
             }
             else {
-                callback(func(req[prop]));
+                callback();
             }
         }
         else {
-            error.textContent = err + req.status + " - " + req.responseText;
+            res.text().then(function(data) {
+                error.textContent = err + res.status + " - " + data;
+            });
         }
     };
 }
-
-reloadTodoList();
