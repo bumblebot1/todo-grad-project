@@ -48,23 +48,19 @@ form.onsubmit = function(event) {
     event.preventDefault();
 };
 
-//the flag parameter is set when the response body should be use for the callback
-function responseHandlerFactory(callback, err, status, flag) {
+function responseStatusCheck(status, err) {
     return function(res) {
-        if (res.status === status) {
-            if (flag) {
-                res.json().then(callback);
-            }
-            else {
-                callback();
-            }
-        }
-        else {
-            res.text().then(function(data) {
-                error.textContent = err + res.status + " - " + data;
+        if (res.status !== status) {
+            return res.text().then(function(data) {
+                throw err + res.status + " - " + data;
             });
         }
+        return res;
     };
+}
+
+function handleError(err) {
+    error.textContent = err;
 }
 
 function createTodo(str, callback) {
@@ -81,8 +77,12 @@ function createTodo(str, callback) {
         body: JSON.stringify(payload)
     })
     .then(
-        responseHandlerFactory(callback, "Failed to create item. Server returned ", 201, false)
-    );
+        responseStatusCheck(201, "Failed to create item. Server returned ")
+    )
+    .then(function(res) {
+        callback();
+    })
+    .catch(handleError);
 }
 
 function getTodoList(callback) {
@@ -94,8 +94,12 @@ function getTodoList(callback) {
         }
     })
     .then(
-        responseHandlerFactory(callback, "Failed to get list. Server returned ", 200, true)
-    );
+        responseStatusCheck(200, "Failed to get list. Server returned ")
+    )
+    .then(function(res) {
+        res.json().then(callback);
+    })
+    .catch(handleError);
 }
 
 function completeEntry(todo) {
@@ -111,8 +115,13 @@ function completeEntry(todo) {
         body: JSON.stringify(payload)
     })
     .then(
-        responseHandlerFactory(reloadTodoList, "Failed to update. Server returned ", 200, false)
-    );
+        responseStatusCheck(200, "Failed to update. Server returned ")
+    )
+    .then(function(res) {
+        reloadTodoList();
+    })
+    .catch(handleError);
+
 }
 
 function deleteList(todoList) {
@@ -141,8 +150,12 @@ function deleteEntry(todo, callback) {
         }
     })
     .then(
-        responseHandlerFactory(callback, "Failed to delete. Server returned ", 200, false)
-    );
+        responseStatusCheck(200, "Failed to delete. Server returned ")
+    )
+    .then(function(res) {
+        callback();
+    })
+    .catch(handleError);
 }
 
 function reloadTodoList() {
