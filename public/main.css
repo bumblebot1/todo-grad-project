@@ -1,3 +1,10 @@
+@keyframes trippy{
+    0% {background-color: rgb(130,0,0);}
+    50% {background-color: green;}
+    75% {background-color: blue;}
+    100% {background-color: rgb(130,0,0);}
+}
+
 body {
     background: rgb(96,162,145);
     color: rgba(0, 0, 0, 0.87);
@@ -7,6 +14,10 @@ body {
 
 header {
     background-color: rgb(130,0,0);
+    animation-name: trippy;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
     padding: 0.5em 1em;
 }
 
@@ -34,7 +45,7 @@ h1 {
     color: white;
     background-color: rgba(32, 105, 33, 1);
     font-family: cursive;
-    border-radius: 5px;
+    border-radius: 50px;
     box-shadow: 3px 3px 3px 3px #ccc;
     font-size: 15;
 }
